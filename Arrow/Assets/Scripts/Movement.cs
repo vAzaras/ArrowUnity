@@ -5,7 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb2d;
-    public float speed;
+    public float speed = 2f;
+    public float maxSpeed = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -14,7 +15,7 @@ public class Movement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         LookAtMouse();
         Move();
@@ -36,5 +37,10 @@ public class Movement : MonoBehaviour
         Vector2 mov = new Vector2(x, y);
 
         rb2d.AddForce(mov);
+
+        if (rb2d.velocity.magnitude > maxSpeed)
+        {
+            rb2d.velocity = rb2d.velocity.normalized * maxSpeed;
+        }
     }
 }
