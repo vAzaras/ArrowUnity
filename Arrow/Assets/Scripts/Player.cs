@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public GameObject bulet;
     public Transform shootDir;
-    public Camera cam;
+    private Camera cam;
     public Vector3 offset = new Vector3(0, 0, -10);
     private Rigidbody2D rb2d;
     public float speed = 2f;
@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     private void Update()
