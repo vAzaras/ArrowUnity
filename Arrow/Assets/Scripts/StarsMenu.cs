@@ -9,16 +9,19 @@ public class StarsMenu : MonoBehaviour
     private float widthCam;
     private float speed;
 
-    void Start()
+    private void Awake()
     {
         cam = Camera.main;
         speed = Random.Range(2, 5);
     }
-
     void Update()
     {
         heightCam = cam.pixelHeight;
         transform.Translate(0f, -speed * Time.deltaTime, 0f);
+        if (transform.position.y <= -Camera.main.orthographicSize - 1)
+        {
+            Destroy(this.gameObject);
+        }
 
     }
 }
