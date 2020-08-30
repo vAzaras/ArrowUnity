@@ -6,9 +6,9 @@ public class MenuMenager : MonoBehaviour
 {
     public GameObject star;
     public float speedSpawnStars = 10f;
-    float lastSpawn;
-    float horizontalCamSize;
-    float verticalCamSize;
+    private float lastSpawn;
+    private float horizontalCamSize;
+    private float verticalCamSize;
     
     void Start()
     {

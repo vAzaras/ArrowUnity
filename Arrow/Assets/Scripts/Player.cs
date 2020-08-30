@@ -6,11 +6,11 @@ public class Player : MonoBehaviour
 {
     public GameObject bulet;
     public Transform shootDir;
-    private Camera cam;
     public Vector3 offset = new Vector3(0, 0, -10);
-    private Rigidbody2D rb2d;
     public float speed = 2f;
     public float maxSpeed = 5f;
+    private Camera cam;
+    private Rigidbody2D rb2d;
 
     private void Start()
     {
