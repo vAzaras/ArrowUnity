@@ -7,8 +7,12 @@ public class Enemy : MonoBehaviour
     public float atackRange = 3f;
     public float followRange = 5f;
     public float atackSpeed = 5f;
+    public float movSpeed = 3f;
+    public float randomMoveTime = 2f;
     public Transform shootDir;
     private float lastAtack;
+    private float lastRandomMove;
+    private int randomMoveNum;
 
     void Start()
     {
@@ -18,9 +22,17 @@ public class Enemy : MonoBehaviour
     
     void Update()
     {
-        if(closestPlayerDist() <= atackRange)
+        if(closestPlayerDist() <= followRange)
         {
-            Atack();
+            FollowPlayer();
+            if(closestPlayerDist() <= atackRange)
+            {
+                Atack();
+            }
+        }
+        else
+        {
+            RandomMove();
         }
     }
 
@@ -60,11 +72,49 @@ public class Enemy : MonoBehaviour
     {
         if(Time.time - lastAtack > 1 / atackSpeed)
         {
-            transform.LookAt(closestPlayerObj().transform.position);
+            lastAtack = Time.time;
         }
     }
     private void FollowPlayer()
     {
-        
+        Vector3 diff = closestPlayerObj().GetComponent<Transform>().position - transform.position;
+        diff.Normalize();
+
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+    }
+    private void RandomMove()
+    {
+        if(Time.time - lastRandomMove > randomMoveTime)
+        {
+            lastRandomMove = Time.time;
+            randomMoveNum = Random.Range(1, 4);
+        }
+        switch (randomMoveNum)
+        {
+            //Up
+            case 1:
+                transform.Rotate(0f, 0f, 0f);
+                transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
+                break;
+            //Down
+            case 2:
+                transform.Rotate(0f, 0f, 180f);
+                transform.Translate(-Vector2.up * movSpeed * Time.deltaTime);
+                break;
+            //Left
+            case 3:
+                transform.Rotate(0f, 0f, 270f);
+                transform.Translate(Vector2.right * movSpeed * Time.deltaTime);
+                break;
+            //Right
+            case 4:
+                transform.Rotate(0f, 0f, 90f);
+                transform.Translate(-Vector2.right * movSpeed * Time.deltaTime);
+                break;
+            default:
+
+                break;
+        }
     }
 }
