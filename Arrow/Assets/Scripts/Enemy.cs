@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     public float randomMoveTime = 2f;
     public Transform shootDir;
     private float lastAtack;
-    private float lastRandomMove;
+    private float lastRandomMove = 0f;
     private int randomMoveNum;
 
     void Start()
@@ -85,31 +85,43 @@ public class Enemy : MonoBehaviour
     }
     private void RandomMove()
     {
-        if(Time.time - lastRandomMove > randomMoveTime)
+        if(Time.time - lastRandomMove >= randomMoveTime)
         {
-            lastRandomMove = Time.time;
             randomMoveNum = Random.Range(1, 4);
+            lastRandomMove = Time.time;
         }
         switch (randomMoveNum)
         {
             //Up
             case 1:
-                transform.Rotate(0f, 0f, 0f);
+                if(transform.rotation.z != 0f)
+                {
+                    transform.Rotate(0f, 0f, 0f);
+                }
                 transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
                 break;
             //Down
             case 2:
-                transform.Rotate(0f, 0f, 180f);
+                if (transform.rotation.z != 180f)
+                {
+                    transform.Rotate(0f, 0f, 180f);
+                }
                 transform.Translate(-Vector2.up * movSpeed * Time.deltaTime);
                 break;
             //Left
             case 3:
-                transform.Rotate(0f, 0f, 270f);
+                if (transform.rotation.z != 90f)
+                {
+                    transform.Rotate(0f, 0f, 90f);
+                }
                 transform.Translate(Vector2.right * movSpeed * Time.deltaTime);
                 break;
             //Right
             case 4:
-                transform.Rotate(0f, 0f, 90f);
+                if (transform.rotation.z != 270f)
+                {
+                    transform.Rotate(0f, 0f, 270f);
+                }
                 transform.Translate(-Vector2.right * movSpeed * Time.deltaTime);
                 break;
             default:
