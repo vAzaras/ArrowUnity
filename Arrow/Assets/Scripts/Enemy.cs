@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     }
 
     
-    void Update()
+    void FixedUpdate()
     {
         if(closestPlayerDist() <= followRange)
         {
@@ -77,17 +77,19 @@ public class Enemy : MonoBehaviour
     }
     private void FollowPlayer()
     {
-        Vector3 diff = closestPlayerObj().GetComponent<Transform>().position - transform.position;
+        Vector3 diff = closestPlayerObj().transform.position - transform.position;
         diff.Normalize();
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
+        transform.position = Vector2.MoveTowards(transform.position, closestPlayerObj().transform.position, movSpeed * Time.deltaTime);
     }
     private void RandomMove()
     {
         if(Time.time - lastRandomMove >= randomMoveTime)
         {
-            randomMoveNum = Random.Range(1, 4);
+            randomMoveNum = Random.Range(1, 5);
             lastRandomMove = Time.time;
         }
         switch (randomMoveNum)
@@ -96,7 +98,7 @@ public class Enemy : MonoBehaviour
             case 1:
                 if(transform.rotation.z != 0f)
                 {
-                    transform.Rotate(0f, 0f, 0f);
+                    transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
                 transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
                 break;
@@ -104,25 +106,29 @@ public class Enemy : MonoBehaviour
             case 2:
                 if (transform.rotation.z != 180f)
                 {
-                    transform.Rotate(0f, 0f, 180f);
+                    transform.rotation = Quaternion.Euler(0f, 0f, 180f);
                 }
-                transform.Translate(-Vector2.up * movSpeed * Time.deltaTime);
+                transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
                 break;
             //Left
             case 3:
                 if (transform.rotation.z != 90f)
                 {
-                    transform.Rotate(0f, 0f, 90f);
+                    transform.rotation = Quaternion.Euler(0f, 0f, 90f);
                 }
-                transform.Translate(Vector2.right * movSpeed * Time.deltaTime);
+                transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
                 break;
             //Right
             case 4:
                 if (transform.rotation.z != 270f)
                 {
-                    transform.Rotate(0f, 0f, 270f);
+                    transform.rotation = Quaternion.Euler(0f, 0f, 270f);
                 }
-                transform.Translate(-Vector2.right * movSpeed * Time.deltaTime);
+                transform.Translate(Vector2.up * movSpeed * Time.deltaTime);
+                break;
+            case 5:
+                //Don't move
+                Debug.Log("Stoje");
                 break;
             default:
 
